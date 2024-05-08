@@ -1,8 +1,6 @@
 package dnsimple
 
 import (
-	"fmt"
-
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
 	dnsimple "github.com/libdns/dnsimple"
@@ -23,21 +21,17 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 	}
 }
 
-// TODO: This is just an example. Useful to allow env variable placeholders; update accordingly.
 // Provision sets up the module. Implements caddy.Provisioner.
 func (p *Provider) Provision(ctx caddy.Context) error {
 	p.Provider.APIAccessToken = caddy.NewReplacer().ReplaceAll(p.Provider.APIAccessToken, "")
-	return fmt.Errorf("TODO: not implemented")
+	return nil
 }
 
-// TODO: This is just an example. Update accordingly.
 // UnmarshalCaddyfile sets up the DNS provider from Caddyfile tokens. Syntax:
 //
-//	providername [<api_token>] {
-//	    api_token <api_token>
+//	dnsimple [<api_access_token>] {
+//	    api_access_token <api_access_token>
 //	}
-//
-// **THIS IS JUST AN EXAMPLE AND NEEDS TO BE CUSTOMIZED.**
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	for d.Next() {
 		if d.NextArg() {
@@ -48,7 +42,7 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 		}
 		for nesting := d.Nesting(); d.NextBlock(nesting); {
 			switch d.Val() {
-			case "api_token":
+			case "api_access_token":
 				if p.Provider.APIAccessToken != "" {
 					return d.Err("API token already set")
 				}
