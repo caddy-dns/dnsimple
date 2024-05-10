@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/caddyserver/caddy/v2 v2.7.6
-	github.com/libdns/dnsimple v0.1.1
+	github.com/libdns/dnsimple v0.1.2
 )
 
 require (
