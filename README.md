@@ -28,17 +28,30 @@ To use this module for the ACME DNS challenge, [configure the ACME issuer in you
 
 or with the Caddyfile:
 
-```
-# globally
+```Caddyfile
 {
-	acme_dns dnsimple ...
+	acme_dns dnsimple {$DNSIMPLE_OAUTH_TOKEN}
+}
+
+example.com {
+	...
 }
 ```
 
+```Caddyfile
+example.com {
+	tls {
+		dns dnsimple {$DNSIMPLE_OAUTH_TOKEN}
+	}
+
+	...
+}
 ```
-# one site
-tls {
-	dns dnsimple ...
+
+```Caddyfile
+# syntax
+dnsimple [<api_access_token>] {
+	api_access_token <api_access_token>
 }
 ```
 
