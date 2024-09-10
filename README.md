@@ -32,7 +32,7 @@ or with the Caddyfile:
 
 ```Caddyfile
 {
-	acme_dns dnsimple {$DNSIMPLE_OAUTH_TOKEN}
+	acme_dns dnsimple {$DNSIMPLE_API_ACCESS_TOKEN}
 }
 
 example.com {
@@ -44,7 +44,7 @@ example.com {
 ```Caddyfile
 example.com {
 	tls {
-		dns dnsimple {$DNSIMPLE_OAUTH_TOKEN}
+		dns dnsimple {$DNSIMPLE_API_ACCESS_TOKEN}
 	}
 	...
 }
