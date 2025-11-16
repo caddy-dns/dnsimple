@@ -23,7 +23,9 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 
 // Provision sets up the module. Implements caddy.Provisioner.
 func (p *Provider) Provision(ctx caddy.Context) error {
-	p.Provider.APIAccessToken = caddy.NewReplacer().ReplaceAll(p.Provider.APIAccessToken, "")
+	repl := caddy.NewReplacer()
+	p.Provider.AccountID = repl.ReplaceAll(p.Provider.AccountID, "")
+	p.Provider.APIAccessToken = repl.ReplaceAll(p.Provider.APIAccessToken, "")
 	return nil
 }
 
@@ -31,6 +33,7 @@ func (p *Provider) Provision(ctx caddy.Context) error {
 //
 //	dnsimple [<api_access_token>] {
 //	    api_access_token <api_access_token>
+//	    account_id <account_id>
 //	}
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	for d.Next() {
@@ -48,6 +51,16 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				}
 				if d.NextArg() {
 					p.Provider.APIAccessToken = d.Val()
+				}
+				if d.NextArg() {
+					return d.ArgErr()
+				}
+			case "account_id":
+				if p.Provider.AccountID != "" {
+					return d.Err("Account ID already set")
+				}
+				if d.NextArg() {
+					p.Provider.AccountID = d.Val()
 				}
 				if d.NextArg() {
 					return d.ArgErr()
