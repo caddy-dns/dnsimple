@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: go build ./...
+      - run: go vet ./...
+
+  xcaddy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Install xcaddy
+        run: go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+      - name: Build Caddy with dnsimple plugin
+        run: xcaddy build --with github.com/caddy-dns/dnsimple=.
